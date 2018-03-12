@@ -1,11 +1,15 @@
 package game.twodgame;
 
 import game.twodgame.game.twodgame.display.Display;
+import game.twodgame.game.twodgame.gfx.Assets;
 import game.twodgame.game.twodgame.gfx.ImageLoader;
+import game.twodgame.game.twodgame.gfx.SpriteSheet;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+
+import static game.twodgame.game.twodgame.gfx.Assets.*;
 
 /**
  * Created by Shane on 3/11/2018.
@@ -18,7 +22,6 @@ public class Game implements Runnable {
     private Thread thread;
     private BufferStrategy bs;
     private Graphics g;
-    private BufferedImage test;
 
     public Game(String title, int width, int height) {
         this.width = width;
@@ -26,13 +29,15 @@ public class Game implements Runnable {
         this.title = title;
     }
 
+    int x = 0;
+
     public void init() {
         display = new Display(title, width, height);
-        test = ImageLoader.loadImage("/textures/AllSprites.png");
+        Assets.init();
     }
 
     private void update() {
-
+        x++;
     }
 
     private void render() {
@@ -45,7 +50,7 @@ public class Game implements Runnable {
         //Clear Screen
         g.clearRect(0,0,width,height);
         //Draw Stuff
-        g.drawImage(test, 20, 20, null);
+        g.drawImage(charRight, x, 100, null);
         //Stop Drawing
         bs.show();
         g.dispose();
