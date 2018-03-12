@@ -1,4 +1,4 @@
-package game.twodgame.game.twodgame.display;
+package game.twodgame.display;
 
 import javax.swing.*;
 import java.awt.*;

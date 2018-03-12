@@ -1,16 +1,14 @@
 package game.twodgame;
 
-import game.twodgame.game.twodgame.FPSCounter;
-import game.twodgame.game.twodgame.display.Display;
-import game.twodgame.game.twodgame.gfx.Assets;
-import game.twodgame.game.twodgame.gfx.ImageLoader;
-import game.twodgame.game.twodgame.gfx.SpriteSheet;
+import game.twodgame.display.Display;
+import game.twodgame.gfx.Assets;
+import game.twodgame.states.GameState;
+import game.twodgame.states.State;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 
-import static game.twodgame.game.twodgame.gfx.Assets.*;
+import static game.twodgame.gfx.Assets.*;
 
 /**
  * Created by Shane on 3/11/2018.
@@ -18,11 +16,14 @@ import static game.twodgame.game.twodgame.gfx.Assets.*;
 public class Game implements Runnable {
     private Display display;
     private String title;
-    private int width, height;
+    private int width, height, updates;
     private boolean running = false;
     private Thread thread;
     private BufferStrategy bs;
     private Graphics g;
+    private long timer, currentFPSCount, lastFPSCount;
+    private FPSCounter counter;
+    private State gameState;
 
     public Game(String title, int width, int height) {
         this.width = width;
@@ -30,15 +31,16 @@ public class Game implements Runnable {
         this.title = title;
     }
 
-    int x = 0;
+    private void update() {
+        if(State.getCurrentState() != null)
+            State.getCurrentState().update();
+    }
 
     public void init() {
         display = new Display(title, width, height);
         Assets.init();
-    }
-
-    private void update() {
-        x++;
+        gameState = new GameState();
+        State.setCurrentState(gameState);
     }
 
     private void render() {
@@ -51,7 +53,8 @@ public class Game implements Runnable {
         //Clear Screen
         g.clearRect(0,0,width,height);
         //Draw Stuff
-        g.drawImage(charRight, x, 100, null);
+        if(State.getCurrentState() != null)
+            State.getCurrentState().render(g);
         //Stop Drawing
         bs.show();
         g.dispose();
@@ -59,9 +62,11 @@ public class Game implements Runnable {
 
     public void run() {
         init();
-        int updates = 0;
-        long timer = 0, currentFPSCount = 0, lastFPSCount = System.nanoTime();
-        FPSCounter counter = new FPSCounter(60);
+        updates = 0;
+        timer = 0;
+        currentFPSCount = 0;
+        lastFPSCount = System.nanoTime();
+        counter = new FPSCounter(60);
 
         while(running) {
             currentFPSCount = System.nanoTime();

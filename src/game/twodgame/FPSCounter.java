@@ -1,13 +1,11 @@
-package game.twodgame.game.twodgame;
+package game.twodgame;
 
 /**
  * Created by Shane on 3/11/2018.
  */
 public class FPSCounter {
-    private double timePerUpdate;
-    private double delta;
-    private long now;
-    private long lastTime = System.nanoTime();
+    private double timePerUpdate, delta;
+    private long now, lastTime = System.nanoTime();
 
     public FPSCounter(int fps) {
         timePerUpdate = 1e9 / fps;

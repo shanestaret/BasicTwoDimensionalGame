@@ -1,4 +1,4 @@
-package game.twodgame.game.twodgame.gfx;
+package game.twodgame.gfx;
 
 import java.awt.image.BufferedImage;
 
