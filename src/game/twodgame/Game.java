@@ -1,5 +1,6 @@
 package game.twodgame;
 
+import game.twodgame.game.twodgame.FPSCounter;
 import game.twodgame.game.twodgame.display.Display;
 import game.twodgame.game.twodgame.gfx.Assets;
 import game.twodgame.game.twodgame.gfx.ImageLoader;
@@ -58,10 +59,26 @@ public class Game implements Runnable {
 
     public void run() {
         init();
+        int updates = 0;
+        long timer = 0, currentFPSCount = 0, lastFPSCount = System.nanoTime();
+        FPSCounter counter = new FPSCounter(60);
 
         while(running) {
-            update();
-            render();
+            currentFPSCount = System.nanoTime();
+            timer += currentFPSCount - lastFPSCount;
+            lastFPSCount = currentFPSCount;
+
+            if(counter.check()) {
+                update();
+                render();
+                updates++;
+            }
+            if(timer >= 1e9) {
+                System.out.println("Ticks and Frames: " + updates);
+                updates = 0;
+                timer = 0;
+            }
+
         }
 
         stop();
