@@ -1,9 +1,11 @@
 package game.twodgame;
 
 import game.twodgame.game.twodgame.display.Display;
+import game.twodgame.game.twodgame.gfx.ImageLoader;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 /**
  * Created by Shane on 3/11/2018.
@@ -16,6 +18,7 @@ public class Game implements Runnable {
     private Thread thread;
     private BufferStrategy bs;
     private Graphics g;
+    private BufferedImage test;
 
     public Game(String title, int width, int height) {
         this.width = width;
@@ -25,6 +28,7 @@ public class Game implements Runnable {
 
     public void init() {
         display = new Display(title, width, height);
+        test = ImageLoader.loadImage("/textures/AllSprites.png");
     }
 
     private void update() {
@@ -41,7 +45,7 @@ public class Game implements Runnable {
         //Clear Screen
         g.clearRect(0,0,width,height);
         //Draw Stuff
-
+        g.drawImage(test, 20, 20, null);
         //Stop Drawing
         bs.show();
         g.dispose();
